@@ -3,6 +3,7 @@ package com.example.catatan.Dao
 import androidx.room.*
 import com.example.catatan.Model.ModelNote
 
+//membua
 @Dao
 interface NoteDao {
     @get:Query("SELECT * FROM notes ORDER BY id DESC")

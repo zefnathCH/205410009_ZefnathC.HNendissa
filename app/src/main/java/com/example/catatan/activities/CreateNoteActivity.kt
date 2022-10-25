@@ -53,6 +53,7 @@ class CreateNoteActivity : AppCompatActivity() {
             setViewOrUpdateNote()
         }
 
+      //fungsi tombol hapus
         if (modelNoteExtra != null) {
             linearDelete.visibility = View.VISIBLE
             btnDelete.setOnClickListener {
@@ -60,16 +61,18 @@ class CreateNoteActivity : AppCompatActivity() {
             }
         }
 
+        //fungsi tombol hapus url
         btnHapusUrl.setOnClickListener {
             tvUrlNote.setText(null)
             tvUrlNote.setVisibility(View.GONE)
             btnHapusUrl.setVisibility(View.GONE)
         }
 
+        //fungsi tombol tambah Url
         btnAddUrl.setOnClickListener {
             showDialogUrl()
         }
-
+        //fungsi tombol tambah Image
         btnAddImage.setOnClickListener {
             if (ContextCompat.checkSelfPermission(applicationContext,
                     Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
@@ -79,22 +82,25 @@ class CreateNoteActivity : AppCompatActivity() {
                 selectImage()
             }
         }
-
+        //fungsi tombol hapus Image
         fabDeleteImage.setOnClickListener {
             imageNote.setImageBitmap(null)
             imageNote.setVisibility(View.GONE)
             fabDeleteImage.setVisibility(View.GONE)
             selectImagePath = ""
         }
-
+        //fungsi tombol simpan note
         fabSaveNote.setOnClickListener(View.OnClickListener {
             if (editTextTitle.getText().toString().isEmpty()) {
+                //jika TextTile kosong, maka bagian ini yang muncul
                 Toast.makeText(this@CreateNoteActivity, "Judul Tidak Boleh Kosong", Toast.LENGTH_SHORT).show()
                 return@OnClickListener
             } else if (editTextSubTitle.getText().toString().isEmpty() && editTextDesc.getText().toString().isEmpty()) {
+                //jika SubTitle kosong, maka bagian ini yang muncul
                 Toast.makeText(this@CreateNoteActivity, "Catatan Tidak Boleh Kosong", Toast.LENGTH_SHORT).show()
                 return@OnClickListener
             }
+
 
             val modelNote = ModelNote()
             modelNote.title = editTextTitle.getText().toString()
@@ -112,6 +118,7 @@ class CreateNoteActivity : AppCompatActivity() {
                 modelNote.id = modelNoteExtra!!.id
             }
 
+            // proses penyimpanan catatan
             class saveNoteAsyncTask : AsyncTask<Void?, Void?, Void?>() {
                 override fun doInBackground(vararg p0: Void?): Void? {
                     NoteDatabase.getInstance(applicationContext)?.noteDao()?.insert(modelNote)
@@ -128,7 +135,7 @@ class CreateNoteActivity : AppCompatActivity() {
             saveNoteAsyncTask().execute()
         })
     }
-
+    //jika ada perubahan atau edit catatan, maka bagian ini yang bekerja
     @SuppressLint("RestrictedApi")
     private fun setViewOrUpdateNote() {
         editTextTitle.setText(modelNoteExtra?.title)
@@ -155,6 +162,7 @@ class CreateNoteActivity : AppCompatActivity() {
             startActivityForResult(intent, REQUEST_SELECT)
         }
     }
+
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
