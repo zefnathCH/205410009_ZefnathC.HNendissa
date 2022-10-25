@@ -8,6 +8,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.catatan.Dao.NoteDao
 
+
 @Database(entities = [ModelNote::class], version = 1, exportSchema = false)
 abstract class NoteDatabase : RoomDatabase() {
 

@@ -21,7 +21,7 @@ import java.util.*
 
 class MainActivity : AppCompatActivity(), onClickItemListener {
 
-    private val modelNoteList: MutableList<ModelNote> = ArrayList()
+    private val modelNoteList: MutableList<ModelNote> = ArrayList() //tampilan yang muncul pertama adalah menggunakan List
     private var noteAdapter: NoteAdapter? = null
     private var onClickPosition = -1
 
@@ -33,6 +33,7 @@ class MainActivity : AppCompatActivity(), onClickItemListener {
         setSupportActionBar(toolbar)
         assert(supportActionBar != null)
 
+        // membuat note baru dengn menggunakan setOnClickListener
         fabCreateNote.setOnClickListener {
             startActivityForResult(Intent(this@MainActivity, CreateNoteActivity::class.java), REQUEST_ADD)
         }
@@ -40,21 +41,24 @@ class MainActivity : AppCompatActivity(), onClickItemListener {
         noteAdapter = NoteAdapter(modelNoteList, this)
         rvListNote.setAdapter(noteAdapter)
 
-        //change mode List to Grid
+        //merubah mode dari List ke Grid
         modeGrid()
 
         // mendapatkan data catatan
         getNote(REQUEST_SHOW, false)
     }
 
+    //jika user memilih mode Grid maka ini yang akang dikerjakan
     private fun modeGrid() {
         rvListNote.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
     }
 
+    //jika user memilih mode List maka ini yang akang dikerjakan
     private fun modeList() {
         rvListNote.layoutManager = LinearLayoutManager(this)
     }
 
+    //Bagian untuk mendapatkan note yang telah dibuat yang ada pada NoteDao.kt
     private fun getNote(requestCode: Int, deleteNote: Boolean) {
 
         @Suppress("UNCHECKED_CAST")
@@ -86,6 +90,7 @@ class MainActivity : AppCompatActivity(), onClickItemListener {
         GetNoteAsyncTask().execute()
     }
 
+
     public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_ADD && resultCode == RESULT_OK) {
@@ -111,11 +116,13 @@ class MainActivity : AppCompatActivity(), onClickItemListener {
         private const val REQUEST_SHOW = 3
     }
 
+    //membuat menu
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
         return true
     }
 
+    //options yang menyediakan menu untuk pilihan list dan Grind
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.listView -> modeList()
